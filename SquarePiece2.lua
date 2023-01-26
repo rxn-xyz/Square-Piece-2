@@ -83,13 +83,23 @@ local BringMob = Farming:AddButton("Bring Mob", function()
     for _, Mob in pairs(Workspace.Entities:GetChildren()) do
         if Mob.Name == Options["SetMob"].Value then
             pcall(function()
-                LocalPlayer.Character.HumanoidRootPart.CFrame = Mob.HumanoidRootPart.CFrame
-                wait(0.5)
                 Mob.HumanoidRootPart.CFrame = Position
             end)
         end
     end
-    LocalPlayer.Character.HumanoidRootPart.CFrame = Position
+end)
+-- Bring + Anchor Mob
+local BringAnchorMob = Farming:AddButton("Bring + Anchor Mob", function()
+    local Position = LocalPlayer.Character.HumanoidRootPart.CFrame
+    for _, Mob in pairs(Workspace.Entities:GetChildren()) do
+        if Mob.Name == Options["SetMob"].Value then
+            pcall(function()
+                Mob.HumanoidRootPart.CFrame = Position
+                task.wait(0.1)
+                Mob.HumanoidRootPart.Anchored = true
+            end)
+        end
+    end
 end)
 -- Anchor Mob
 local AnchorMob = Farming:AddButton("Anchor Mob", function()
@@ -196,3 +206,5 @@ end
 RefreshPlayers()
 Players.PlayerAdded:Connect(RefreshPlayers)
 Players.PlayerRemoving:Connect(RefreshPlayers)
+-- Network Owner
+game:GetService("RunService").RenderStepped:Connect(function() sethiddenproperty(game.Players.LocalPlayer,"SimulationRadius", math.huge); end)
