@@ -1,8 +1,11 @@
--- Square Piece 2
 -- Variables
 local Players           = game:GetService("Players")
 local LocalPlayer       = Players.LocalPlayer
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+-- Check Player
+task.spawn(function()
+    task.wait(20) if LocalPlayer.Character.Parent ~= Workspace.Entities then game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, LocalPlayer) end
+end)
 -- Sort
 local function Sort(Table)
     table.sort(Table, function(a,b)
@@ -208,3 +211,8 @@ Players.PlayerAdded:Connect(RefreshPlayers)
 Players.PlayerRemoving:Connect(RefreshPlayers)
 -- Network Owner
 game:GetService("RunService").RenderStepped:Connect(function() sethiddenproperty(game.Players.LocalPlayer,"SimulationRadius", math.huge); end)
+-- Rejoin Incase Of Kick
+game.NetworkClient.ChildRemoved:Connect(function()
+    task.wait(3)
+    game:GetService('TeleportService'):TeleportToPlaceInstance(game.PlaceId, game.JobId, LocalPlayer)
+end)
